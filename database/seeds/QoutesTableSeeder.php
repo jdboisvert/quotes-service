@@ -27,5 +27,19 @@ class QoutesTableSeeder extends Seeder
             'author_name' => 'Emo Philips',
             ]);	
 
+        Qoute::create([
+            'qoute' => 'The greatest glory in living lies not in never falling, but in rising every time we fall.',
+            'author_name' => 'Nelson Mandela',
+            ]);	
+
+        Qoute::create([
+            'qoute' => 'Life is what happens when you\'re busy making other plans.',
+            'author_name' => 'John Lennon',
+            ]);	
+
+        Qoute::create([
+            'qoute' => 'Always remember that you are absolutely unique. Just like everyone else',
+            'author_name' => 'Margaret Mead',
+            ]);	
     }
 }
