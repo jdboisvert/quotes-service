@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class QuoteList extends Component {
     constructor() {
@@ -31,7 +31,7 @@ class QuoteList extends Component {
                             <div className="card-header">Quotes</div>
                             <div className="card-body">
                                 <Link
-                                    className="btn btn-primary btn-sm mb-3"
+                                    className="btn btn-primary mb-3"
                                     to="/create"
                                 >
                                     Create new quote
@@ -66,4 +66,4 @@ class QuoteList extends Component {
     }
 }
 
-export default QuoteList;
+export default withRouter(QuoteList);

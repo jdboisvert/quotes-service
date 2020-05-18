@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
 /**
  * Used to handle creating a form.
@@ -13,7 +14,7 @@ class QuoteCreateForm extends Component {
             error: ""
         };
         this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handleCreateQuote = this.handleCreateQuote.bind(this);
+        this.handleSubmitQuote = this.handleSubmitQuote.bind(this);
         this.renderError = this.renderError.bind(this);
     }
 
@@ -23,7 +24,20 @@ class QuoteCreateForm extends Component {
         });
     }
 
-    handleCreateQuote(event) {
+    componentDidMount() {
+        if (this.props.match.params.id) {
+            const quoteId = this.props.match.params.id;
+
+            axios.get(`/api/quote/details/${quoteId}`).then(response => {
+                this.setState({
+                    quote: response.data.quote.quote,
+                    authorName: response.data.quote.author_name
+                });
+            });
+        }
+    }
+
+    handleSubmitQuote(event) {
         event.preventDefault();
         const { history } = this.props;
 
@@ -31,17 +45,36 @@ class QuoteCreateForm extends Component {
             quote: this.state.quote,
             author_name: this.state.authorName
         };
-        axios
-            .post("/api/quote", quote)
-            .then(response => {
-                // redirect to the homepage
-                history.push("/");
-            })
-            .catch(error => {
-                this.setState({
-                    error: error.response.data.message
+
+        //If there is an id in the url then it is editing
+        //Otherwise it is creating
+        if (this.props.match.params.id) {
+            const quoteId = this.props.match.params.id;
+
+            axios
+                .put(`/api/quote/update/${quoteId}`, quote)
+                .then(response => {
+                    // redirect to the homepage
+                    history.push("/");
+                })
+                .catch(error => {
+                    this.setState({
+                        error: error.response.data.message
+                    });
                 });
-            });
+        } else {
+            axios
+                .post("/api/quote", quote)
+                .then(response => {
+                    // redirect to the homepage
+                    history.push("/");
+                })
+                .catch(error => {
+                    this.setState({
+                        error: error.response.data.message
+                    });
+                });
+        }
     }
 
     renderError() {
@@ -61,11 +94,11 @@ class QuoteCreateForm extends Component {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-header">
-                                Enter the details below to create a new quote.
+                                Enter the quote the details below
                             </div>
                             <div className="card-body">
                                 {this.renderError()}
-                                <form onSubmit={this.handleCreateQuote}>
+                                <form onSubmit={this.handleSubmitQuote}>
                                     <div className="form-group">
                                         <label htmlFor="quote">Quote</label>
                                         <textarea
@@ -74,7 +107,7 @@ class QuoteCreateForm extends Component {
                                             className={`form-control`}
                                             rows="10"
                                             name="quote"
-                                            maxlength="500"
+                                            maxLength="500"
                                             value={this.state.quote}
                                             onChange={this.handleFieldChange}
                                         />
@@ -93,7 +126,7 @@ class QuoteCreateForm extends Component {
                                         />
                                     </div>
                                     <button className="btn btn-primary">
-                                        Create
+                                        Store
                                     </button>
                                 </form>
                             </div>
@@ -105,4 +138,4 @@ class QuoteCreateForm extends Component {
     }
 }
 
-export default QuoteCreateForm;
+export default withRouter(QuoteCreateForm);

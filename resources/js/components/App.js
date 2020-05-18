@@ -14,8 +14,17 @@ class App extends Component {
                     <Header />
                     <Switch>
                         <Route exact path="/" component={QuoteList} />
-                        <Route path="/create" component={QuoteCreateForm} />
-                        <Route path="/:id" component={QuoteDetails} />
+                        <Route
+                            exact
+                            path="/create"
+                            component={QuoteCreateForm}
+                        />
+                        <Route exact path="/:id" component={QuoteDetails} />
+                        <Route
+                            exact
+                            path="/update/:id"
+                            component={QuoteCreateForm}
+                        />
                     </Switch>
                 </div>
             </BrowserRouter>

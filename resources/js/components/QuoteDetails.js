@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
 
 class QuoteDetails extends Component {
     constructor(props) {
@@ -54,9 +55,13 @@ class QuoteDetails extends Component {
                                 <hr />
                                 <div className="btn-toolbar" role="toolbar">
                                     <div className="mr-2">
-                                        <button className="btn btn-primary">
+                                        <Link
+                                            className="btn btn-primary"
+                                            to={`/update/${quote.id}`}
+                                            key={quote.id}
+                                        >
                                             Update
-                                        </button>
+                                        </Link>
                                     </div>
                                     <div className="mr-2">
                                         <button
@@ -76,4 +81,4 @@ class QuoteDetails extends Component {
     }
 }
 
-export default QuoteDetails;
+export default withRouter(QuoteDetails);

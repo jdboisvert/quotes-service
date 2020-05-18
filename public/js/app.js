@@ -69874,11 +69874,17 @@ var App = /*#__PURE__*/function (_Component) {
         path: "/",
         component: _QuoteList__WEBPACK_IMPORTED_MODULE_4__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        exact: true,
         path: "/create",
         component: _QuoteCreateForm__WEBPACK_IMPORTED_MODULE_5__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        exact: true,
         path: "/:id",
         component: _QuoteDetails__WEBPACK_IMPORTED_MODULE_6__["default"]
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        exact: true,
+        path: "/update/:id",
+        component: _QuoteCreateForm__WEBPACK_IMPORTED_MODULE_5__["default"]
       }))));
     }
   }]);
@@ -69933,6 +69939,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -69959,6 +69966,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 /**
  * Used to handle creating a form.
  */
@@ -69980,7 +69988,7 @@ var QuoteCreateForm = /*#__PURE__*/function (_Component) {
       error: ""
     };
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
-    _this.handleCreateQuote = _this.handleCreateQuote.bind(_assertThisInitialized(_this));
+    _this.handleSubmitQuote = _this.handleSubmitQuote.bind(_assertThisInitialized(_this));
     _this.renderError = _this.renderError.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -69991,24 +69999,53 @@ var QuoteCreateForm = /*#__PURE__*/function (_Component) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
   }, {
-    key: "handleCreateQuote",
-    value: function handleCreateQuote(event) {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       var _this2 = this;
+
+      if (this.props.match.params.id) {
+        var quoteId = this.props.match.params.id;
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/quote/details/".concat(quoteId)).then(function (response) {
+          _this2.setState({
+            quote: response.data.quote.quote,
+            authorName: response.data.quote.author_name
+          });
+        });
+      }
+    }
+  }, {
+    key: "handleSubmitQuote",
+    value: function handleSubmitQuote(event) {
+      var _this3 = this;
 
       event.preventDefault();
       var history = this.props.history;
       var quote = {
         quote: this.state.quote,
         author_name: this.state.authorName
-      };
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/quote", quote).then(function (response) {
-        // redirect to the homepage
-        history.push("/");
-      })["catch"](function (error) {
-        _this2.setState({
-          error: error.response.data.message
+      }; //If there is an id in the url then it is editing
+      //Otherwise it is creating
+
+      if (this.props.match.params.id) {
+        var quoteId = this.props.match.params.id;
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/quote/update/".concat(quoteId), quote).then(function (response) {
+          // redirect to the homepage
+          history.push("/");
+        })["catch"](function (error) {
+          _this3.setState({
+            error: error.response.data.message
+          });
         });
-      });
+      } else {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/quote", quote).then(function (response) {
+          // redirect to the homepage
+          history.push("/");
+        })["catch"](function (error) {
+          _this3.setState({
+            error: error.response.data.message
+          });
+        });
+      }
     }
   }, {
     key: "renderError",
@@ -70033,10 +70070,10 @@ var QuoteCreateForm = /*#__PURE__*/function (_Component) {
         className: "card"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-header"
-      }, "Enter the details below to create a new quote."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Enter the quote the details below"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-body"
       }, this.renderError(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
-        onSubmit: this.handleCreateQuote
+        onSubmit: this.handleSubmitQuote
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
@@ -70047,7 +70084,7 @@ var QuoteCreateForm = /*#__PURE__*/function (_Component) {
         className: "form-control",
         rows: "10",
         name: "quote",
-        maxlength: "500",
+        maxLength: "500",
         value: this.state.quote,
         onChange: this.handleFieldChange
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -70063,14 +70100,14 @@ var QuoteCreateForm = /*#__PURE__*/function (_Component) {
         onChange: this.handleFieldChange
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-primary"
-      }, "Create")))))));
+      }, "Store")))))));
     }
   }]);
 
   return QuoteCreateForm;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (QuoteCreateForm);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(QuoteCreateForm));
 
 /***/ }),
 
@@ -70087,6 +70124,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70108,6 +70146,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -70180,8 +70219,10 @@ var QuoteDetails = /*#__PURE__*/function (_Component) {
         role: "toolbar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mr-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        className: "btn btn-primary"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        className: "btn btn-primary",
+        to: "/update/".concat(quote.id),
+        key: quote.id
       }, "Update")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mr-2"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
@@ -70194,7 +70235,7 @@ var QuoteDetails = /*#__PURE__*/function (_Component) {
   return QuoteDetails;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (QuoteDetails);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(QuoteDetails));
 
 /***/ }),
 
@@ -70287,7 +70328,7 @@ var QuoteList = /*#__PURE__*/function (_Component) {
       }, "Quotes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-        className: "btn btn-primary btn-sm mb-3",
+        className: "btn btn-primary mb-3",
         to: "/create"
       }, "Create new quote"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
         className: "list-group list-group-flush"
@@ -70312,7 +70353,7 @@ var QuoteList = /*#__PURE__*/function (_Component) {
   return QuoteList;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (QuoteList);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(QuoteList));
 
 /***/ }),
 
