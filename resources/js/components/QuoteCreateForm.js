@@ -38,11 +38,9 @@ class QuoteCreateForm extends Component {
                 history.push("/");
             })
             .catch(error => {
-                console.log(error.response.data.message);
                 this.setState({
                     error: error.response.data.message
                 });
-                console.log(this.state.error);
             });
     }
 
