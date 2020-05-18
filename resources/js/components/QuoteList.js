@@ -30,12 +30,6 @@ class QuoteList extends Component {
                         <div className="card">
                             <div className="card-header">Quotes</div>
                             <div className="card-body">
-                                <Link
-                                    className="btn btn-primary mb-3"
-                                    to="/create"
-                                >
-                                    Create new quote
-                                </Link>
                                 <ul className="list-group list-group-flush">
                                     {quotes.map(quote => (
                                         <Link
