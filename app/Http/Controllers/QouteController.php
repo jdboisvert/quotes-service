@@ -37,7 +37,7 @@ class QouteController extends Controller
     public function create(Request $request){
         
         $this->validate($request, [
-            'qoute' => 'required|string|max:500',
+            'qoute' => 'required|string|unique:qoutes,qoute|max:500',
             'author_name' => 'required|string|max:255'
         ]);
 
@@ -87,7 +87,7 @@ class QouteController extends Controller
     public function update(Request $request, $id){
 
         $this->validate($request, [
-            'qoute' => 'required_without_all:author_name|string|max:500',
+            'qoute' => "required_without_all:author_name|string|unique:qoutes,qoute,$id|max:500",
             'author_name' => 'required_without_all:qoute|string|max:255'
         ]);
 

@@ -15,7 +15,7 @@ class CreateQoutesTable extends Migration
     {
         Schema::create('qoutes', function (Blueprint $table) {
             $table->id();
-            $table->string('qoute', 500);
+            $table->string('qoute', 500)->unique();
             $table->string('author_name', 255);
             $table->timestamps();
         });

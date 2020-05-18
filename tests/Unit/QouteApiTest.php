@@ -154,6 +154,24 @@ class QouteApiTest extends TestCase
 
     }
 
+    /**
+     * Testing correct response structure and status
+     * is returned when creating a qoute that already exist.
+     * This is specific to the qoute parameter not author
+     *
+     * @return void
+     */
+    public function testCreatingAQouteThatAlreadyExists()
+    {
+        $data = [
+            'qoute'=> 'I do not fear computers. I fear lack of them.', 
+            'author_name'=> 'Jeffrey Boisvert'
+            ];
+        $response = $this->json('POST', '/api/qoute', $data);
+        
+        $response->assertStatus(422);
+
+    }
 
     /**
      * Testing correct response status
@@ -236,6 +254,25 @@ class QouteApiTest extends TestCase
             'qoute'=> 'This is a test update', 
             'author_name'=> 'Jeffrey Boisvert'
         ]);
+    }
+
+    /**
+     * Testing correct response structure and status
+     * is returned when updating a qoute that already exist.
+     * This is specific to the qoute parameter not author
+     *
+     * @return void
+     */
+    public function testUpdatingAQouteThatAlreadyExists()
+    {
+        $data = [
+            'qoute'=> 'I do not fear computers. I fear lack of them.', 
+            'author_name'=> 'Jeffrey Boisvert'
+            ];
+        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        
+        $response->assertStatus(422);
+
     }
 
     /**
