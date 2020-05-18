@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import QuoteDisplay from "./QuoteDisplay";
 
 class QuoteDetails extends Component {
     constructor(props) {
@@ -41,15 +42,12 @@ class QuoteDetails extends Component {
                     <div className="col-md-8">
                         <div className="card">
                             <div className="card-body">
-                                <blockquote className="blockquote text-center">
-                                    <p className="mb-0">{quote.quote}</p>
-                                    <footer className="blockquote-footer">
-                                        by{" "}
-                                        <cite title="Source Title">
-                                            {quote.author_name}
-                                        </cite>
-                                    </footer>
-                                </blockquote>
+                                <div className="text-center">
+                                    <QuoteDisplay
+                                        quote={quote.quote}
+                                        authorName={quote.author_name}
+                                    />
+                                </div>
                                 <hr />
                                 <div className="btn-toolbar" role="toolbar">
                                     <div className="mr-2">
