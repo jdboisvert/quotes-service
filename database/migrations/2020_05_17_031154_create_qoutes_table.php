@@ -13,10 +13,10 @@ class CreateQoutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('qoutes', function (Blueprint $table) {
+        Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->string('qoute');
-            $table->string('author_name');
+            $table->string('quote', 500)->unique();
+            $table->string('author_name', 255);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateQoutesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('qoutes');
+        Schema::dropIfExists('quotes');
     }
 }
