@@ -19,7 +19,7 @@ class QouteController extends Controller
         
         try {
             $qoutes = Qoute::all();
-            
+            error_log("Test");
             return response()->json(['qoutes' => $qoutes], 200);
         } catch (\Exception $e) {
             error_log($e->getMessage());
