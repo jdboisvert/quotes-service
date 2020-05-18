@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Used to hold the data of a qoute
  */
-class Qoute extends Model
+class Quote extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class Qoute extends Model
      * @var array
      */
     protected $fillable = [
-        'qoute', 'author_name'
+        'quote', 'author_name'
     ];
    
 }

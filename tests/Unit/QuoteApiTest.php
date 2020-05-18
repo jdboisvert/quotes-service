@@ -6,9 +6,9 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
- * Used to run tests on the Qoute API. 
+ * Used to run tests on the Quote API. 
  */
-class QouteApiTest extends TestCase
+class QuoteApiTest extends TestCase
 {
 
     //Ensure database is cleaned and in good state
@@ -26,21 +26,21 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response status and structure
-     * when attempting to get all qoutes from the API. 
+     * when attempting to get all quotes from the API. 
      *
      * @return void
      */
-    public function testGettingAllQoutesSuccessfully()
+    public function testGettingAllQuotesSuccessfully()
     {
-        $response = $this->json('GET', '/api/qoutes');
+        $response = $this->json('GET', '/api/quotes');
 
         $response->assertJsonStructure([
-            'qoutes' => ['*' =>
+            'quotes' => ['*' =>
                 [
                     'id',
                     'created_at',
                     'updated_at',
-                    'qoute',
+                    'quote',
                     'author_name'
                 ]
             ]
@@ -50,20 +50,20 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response status and structure for getting 
-     * qoute with id 1 
+     * quote with id 1 
      *
      * @return void
      */
-    public function testGettingSpecificQouteThatExists()
+    public function testGettingSpecificQuoteThatExists()
     {
-        $response = $this->json('GET', '/api/qoute/details/1');
+        $response = $this->json('GET', '/api/quote/details/1');
 
         $response->assertJsonStructure([
-            'qoute' => [
+            'quote' => [
                     'id',
                     'created_at',
                     'updated_at',
-                    'qoute',
+                    'quote',
                     'author_name'
                 ]
             ]);
@@ -73,13 +73,13 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response structure and status
-     * is returned when a qoute does not exist
+     * is returned when a quote does not exist
      *
      * @return void
      */
-    public function testGettingSpecificQouteThatDoesNotExist()
+    public function testGettingSpecificQuoteThatDoesNotExist()
     {
-        $response = $this->json('GET', '/api/qoute/details/-1');
+        $response = $this->json('GET', '/api/quote/details/-1');
         
         $response->assertJsonStructure([
             'message'
@@ -90,24 +90,24 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response structure and status
-     * is returned when creating a qoute successfully
+     * is returned when creating a quote successfully
      *
      * @return void
      */
-    public function testCreatingAQouteSuccessfully()
+    public function testCreatingAQuoteSuccessfully()
     {
         $data = [
-            'qoute'=> 'This is a test', 
+            'quote'=> 'This is a test', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
         
         $response->assertJsonStructure([
-            'qoute' => [
+            'quote' => [
                 'id',
                 'created_at',
                 'updated_at',
-                'qoute',
+                'quote',
                 'author_name'
             ],
             'message'
@@ -117,20 +117,20 @@ class QouteApiTest extends TestCase
     }
     
     /**
-     * Testing qoute is indeed added to the database successfully. 
+     * Testing quote is indeed added to the database successfully. 
      * 
      * @return void
      */
-    public function testCreatingAQouteAddedToDatabaseSuccessfully()
+    public function testCreatingAQuoteAddedToDatabaseSuccessfully()
     {
         $data = [
-            'qoute'=> 'This is a test', 
+            'quote'=> 'This is a test', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
 
-        $this->assertDatabaseHas('qoutes', [
-            'qoute'=> 'This is a test', 
+        $this->assertDatabaseHas('quotes', [
+            'quote'=> 'This is a test', 
             'author_name'=> 'Jeffrey Boisvert'
         ]);
 
@@ -138,17 +138,17 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response status
-     * is returned when attemping to create a qoute missing just 
-     * the qoute parameter
+     * is returned when attemping to create a quote missing just 
+     * the quote parameter
      *
      * @return void
      */
-    public function testCreatingAQouteMissingJustQouteParameter()
+    public function testCreatingAQuoteMissingJustQuoteParameter()
     {
         $data = [
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
         
         $response->assertStatus(422);
 
@@ -156,18 +156,18 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response structure and status
-     * is returned when creating a qoute that already exist.
-     * This is specific to the qoute parameter not author
+     * is returned when creating a quote that already exist.
+     * This is specific to the quote parameter not author
      *
      * @return void
      */
-    public function testCreatingAQouteThatAlreadyExists()
+    public function testCreatingAQuoteThatAlreadyExists()
     {
         $data = [
-            'qoute'=> 'I do not fear computers. I fear lack of them.', 
+            'quote'=> 'I do not fear computers. I fear lack of them.', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
         
         $response->assertStatus(422);
 
@@ -175,17 +175,17 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response status
-     * is returned when attemping to create a qoute missing just 
+     * is returned when attemping to create a quote missing just 
      * the author_name parameter
      *
      * @return void
      */
-    public function testCreatingAQouteMissingJustAuthorParameter()
+    public function testCreatingAQuoteMissingJustAuthorParameter()
     {
         $data = [
-            'qoute'=> 'This is a test'
+            'quote'=> 'This is a test'
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
         
         $response->assertStatus(422);
 
@@ -193,41 +193,41 @@ class QouteApiTest extends TestCase
 
     /**
      * Testing correct response status
-     * is returned when attemping to create a qoute missing just 
+     * is returned when attemping to create a quote missing just 
      * all parameters
      *
      * @return void
      */
-    public function testCreatingAQouteMissingAllParameters()
+    public function testCreatingAQuoteMissingAllParameters()
     {
         $data = [
             ];
-        $response = $this->json('POST', '/api/qoute', $data);
+        $response = $this->json('POST', '/api/quote', $data);
         
         $response->assertStatus(422);
 
     }
 
     /**
-     * Testing updating qoute returns correct status and response
+     * Testing updating quote returns correct status and response
      * when update was successful
      * 
      * @return void
      */
-    public function testUpdatingQouteSuccesfully()
+    public function testUpdatingQuoteSuccesfully()
     {
         $data = [
-            'qoute'=> 'This is a test update', 
+            'quote'=> 'This is a test update', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
 
         $response->assertJsonStructure([
-            'qoute' => [
+            'quote' => [
                 'id',
                 'created_at',
                 'updated_at',
-                'qoute',
+                'quote',
                 'author_name'
             ],
             'message'
@@ -237,57 +237,57 @@ class QouteApiTest extends TestCase
     }
 
     /**
-     * Testing updating qoute is in database
+     * Testing updating quote is in database
      * when update was successful
      * 
      * @return void
      */
-    public function testUpdatingQouteSuccesfullyInDatabase()
+    public function testUpdatingQuoteSuccesfullyInDatabase()
     {
         $data = [
-            'qoute'=> 'This is a test update', 
+            'quote'=> 'This is a test update', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
 
-        $this->assertDatabaseHas('qoutes', [
-            'qoute'=> 'This is a test update', 
+        $this->assertDatabaseHas('quotes', [
+            'quote'=> 'This is a test update', 
             'author_name'=> 'Jeffrey Boisvert'
         ]);
     }
 
     /**
      * Testing correct response structure and status
-     * is returned when updating a qoute that already exist.
-     * This is specific to the qoute parameter not author
+     * is returned when updating a quote that already exist.
+     * This is specific to the quote parameter not author
      *
      * @return void
      */
-    public function testUpdatingAQouteThatAlreadyExists()
+    public function testUpdatingAQuoteThatAlreadyExists()
     {
         $data = [
-            'qoute'=> 'I do not fear computers. I fear lack of them.', 
+            'quote'=> 'I do not fear computers. I fear lack of them.', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
         
         $response->assertStatus(422);
 
     }
 
     /**
-     * Testing updating qoute that does not exist 
+     * Testing updating quote that does not exist 
      * returns expected result
      * 
      * @return void
      */
-    public function testUpdatingQouteThatDoesNotExist()
+    public function testUpdatingQuoteThatDoesNotExist()
     {
         $data = [
-            'qoute'=> 'This is a test update', 
+            'quote'=> 'This is a test update', 
             'author_name'=> 'Jeffrey Boisvert'
             ];
-        $response = $this->json('PUT', '/api/qoute/update/-1', $data);
+        $response = $this->json('PUT', '/api/quote/update/-1', $data);
 
         $response->assertJsonStructure([
             'message'
@@ -296,24 +296,24 @@ class QouteApiTest extends TestCase
     }
 
     /**
-     * Testing updating qoute by only passing the qoute parameter
+     * Testing updating quote by only passing the quote parameter
      * is successfuly and returns the corret response.
      * 
      * @return void
      */
-    public function testUpdatingQouteSuccessfulWithJustQouteParamater()
+    public function testUpdatingQuoteSuccessfulWithJustQuoteParamater()
     {
         $data = [
-            'qoute'=> 'This is a test update', 
+            'quote'=> 'This is a test update', 
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
 
         $response->assertJsonStructure([
-            'qoute' => [
+            'quote' => [
                 'id',
                 'created_at',
                 'updated_at',
-                'qoute',
+                'quote',
                 'author_name'
             ],
             'message'
@@ -322,24 +322,24 @@ class QouteApiTest extends TestCase
     }
 
     /**
-     * Testing updating qoute by only passing the author_name parameter
+     * Testing updating quote by only passing the author_name parameter
      * is successfuly and returns the corret response.
      * 
      * @return void
      */
-    public function testUpdatingQouteSuccessfulWithJustAuthorNameParamater()
+    public function testUpdatingQuoteSuccessfulWithJustAuthorNameParamater()
     {
         $data = [
             'author_name'=> 'Jeff B.', 
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
 
         $response->assertJsonStructure([
-            'qoute' => [
+            'quote' => [
                 'id',
                 'created_at',
                 'updated_at',
-                'qoute',
+                'quote',
                 'author_name'
             ],
             'message'
@@ -348,29 +348,29 @@ class QouteApiTest extends TestCase
     }
 
     /**
-     * Testing updating qoute by passing no parameters 
+     * Testing updating quote by passing no parameters 
      * causing the update to fail correctly. 
      * 
      * @return void
      */
-    public function testUpdatingQouteUnsuccessfulWithNoParamaters()
+    public function testUpdatingQuoteUnsuccessfulWithNoParamaters()
     {
         $data = [
             ];
-        $response = $this->json('PUT', '/api/qoute/update/1', $data);
+        $response = $this->json('PUT', '/api/quote/update/1', $data);
 
         $response->assertStatus(422);
     }
 
     /**
-     * Testing deleting qoute returns the correct response. 
+     * Testing deleting quote returns the correct response. 
      * 
      * @return void
      */
-    public function testDeletingQouteSuccessfully()
+    public function testDeletingQuoteSuccessfully()
     {
 
-        $response = $this->json('DELETE', '/api/qoute/delete/1');
+        $response = $this->json('DELETE', '/api/quote/delete/1');
 
         $response->assertJsonStructure([
             'message'
@@ -379,31 +379,31 @@ class QouteApiTest extends TestCase
     }
 
     /**
-     * Testing deleting qoute is reflected in the database 
+     * Testing deleting quote is reflected in the database 
      * 
      * @return void
      */
-    public function testDeletingQouteSuccessfullyInDatabase()
+    public function testDeletingQuoteSuccessfullyInDatabase()
     {
 
-        $response = $this->json('DELETE', '/api/qoute/delete/1');
+        $response = $this->json('DELETE', '/api/quote/delete/1');
 
-        $this->assertDatabaseMissing('qoutes', [
-            'qoute' => 'Don\'t cry because it\'s over, smile because it happened.',
+        $this->assertDatabaseMissing('quotes', [
+            'quote' => 'Don\'t cry because it\'s over, smile because it happened.',
             'author_name' => 'Dr. Seuss'
         ]);
 
     }
 
     /**
-     * Testing deleting qoute that does not exist
+     * Testing deleting quote that does not exist
      * 
      * @return void
      */
-    public function testDeletingQouteThatDoesNotExist()
+    public function testDeletingQuoteThatDoesNotExist()
     {
 
-        $response = $this->json('DELETE', '/api/qoute/delete/-1');
+        $response = $this->json('DELETE', '/api/quote/delete/-1');
 
         $response->assertJsonStructure([
             'message'

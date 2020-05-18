@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('qoutes', 'QouteController@getAll');
-Route::get('qoute/details/{id}', 'QouteController@getMatchingId');
-Route::post('qoute', 'QouteController@create');
-Route::put('qoute/update/{id}', 'QouteController@update');
-Route::delete('qoute/delete/{id}', 'QouteController@delete');
+Route::get('quotes', 'QuoteController@getAll');
+Route::get('quote/details/{id}', 'QuoteController@getMatchingId');
+Route::post('quote', 'QuoteController@create');
+Route::put('quote/update/{id}', 'QuoteController@update');
+Route::delete('quote/delete/{id}', 'QuoteController@delete');
