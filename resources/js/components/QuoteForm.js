@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
 /**
- * Used to handle creating a form.
+ * Used to handle the form to create or update quotes.
  */
-class QuoteCreateForm extends Component {
+class QuoteForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,12 +18,10 @@ class QuoteCreateForm extends Component {
         this.renderError = this.renderError.bind(this);
     }
 
-    handleFieldChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
+    /**
+     * Mainly handles getting the data of a quote if
+     * attempting to update a quote
+     */
     componentDidMount() {
         if (this.props.match.params.id) {
             const quoteId = this.props.match.params.id;
@@ -35,6 +33,12 @@ class QuoteCreateForm extends Component {
                 });
             });
         }
+    }
+
+    handleFieldChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     handleSubmitQuote(event) {
@@ -138,4 +142,4 @@ class QuoteCreateForm extends Component {
     }
 }
 
-export default withRouter(QuoteCreateForm);
+export default withRouter(QuoteForm);
