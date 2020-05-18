@@ -21,8 +21,6 @@ class QuoteDetails extends Component {
         });
     }
 
-    //TODO update
-
     handleQuoteDelete() {
         const { history } = this.props;
 
