@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import QuoteDisplay from "./QuoteDisplay";
 
+/**
+ * Used to display a list of all the quotes in the database.
+ * THe user can select and view any of the quotes.
+ */
 class QuoteList extends Component {
     constructor() {
         super();

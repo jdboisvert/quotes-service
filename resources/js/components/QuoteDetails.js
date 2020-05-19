@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import QuoteDisplay from "./QuoteDisplay";
 
+/**
+ * View a single quote with additonal functionality as deleting and updating present
+ */
 class QuoteDetails extends Component {
     constructor(props) {
         super(props);
@@ -13,13 +16,22 @@ class QuoteDetails extends Component {
     }
 
     componentDidMount() {
-        const quoteId = this.props.match.params.id;
+        if (this.props.quote) {
+        } else {
+            const quoteId = this.props.match.params.id;
+            const history = this.props.history;
 
-        axios.get(`/api/quote/details/${quoteId}`).then(response => {
-            this.setState({
-                quote: response.data.quote
-            });
-        });
+            axios
+                .get(`/api/quote/details/${quoteId}`)
+                .then(response => {
+                    this.setState({
+                        quote: response.data.quote
+                    });
+                })
+                .catch(error => {
+                    history.push("/404-not-found");
+                });
+        }
     }
 
     handleQuoteDelete() {
