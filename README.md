@@ -39,7 +39,7 @@ The API supports the following requests:
         -   quote: Quote in quection (ex: 'Live life')(required)
         -   author_name: Person who the quote belongs to (ex: 'Morgan Freeman') (required)
     -   Responses:
-        -   201: Server created successfully
+        -   201: Quote created successfully
             -   quote: holding values of the quote
         -   409: Error registering quote
 
@@ -63,11 +63,11 @@ The API supports the following requests:
         -   404: Quote does not exist
         -   500: Error getting quote
 
--   Update details of a server connection
+-   Update details of a quote connection
 
     -   Method: PUT
     -   URL: /api/quote/update/{id}
-    -   {id}: The id of the server in question
+    -   {id}: The id of the quote in question
     -   Parameters:
         -   quote: Quote in quection (ex: 'Live life')(required if author_name not given)
         -   author_name: Person who the quote belongs to (ex: 'Morgan Freeman') (required if quote not given)
