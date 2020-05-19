@@ -63,7 +63,7 @@ The API supports the following requests:
         -   404: Quote does not exist
         -   500: Error getting quote
 
--   Update details of a quote connection
+-   Update details of a quote
 
     -   Method: PUT
     -   URL: /api/quote/update/{id}
@@ -77,7 +77,7 @@ The API supports the following requests:
         -   404: Quote does not exist
         -   409: Error updatting quote
 
--   Delete a quote connection
+-   Delete a quote
     -   Method: DELETE
     -   URL: /api/quote/delete/{id}
     -   {id}: The id of the quote in question
