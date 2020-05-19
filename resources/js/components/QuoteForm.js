@@ -25,13 +25,18 @@ class QuoteForm extends Component {
     componentDidMount() {
         if (this.props.match.params.id) {
             const quoteId = this.props.match.params.id;
-            console.log(quoteId);
-            axios.get(`/api/quote/details/${quoteId}`).then(response => {
-                this.setState({
-                    quote: response.data.quote.quote,
-                    authorName: response.data.quote.author_name
+            const history = this.props.history;
+            axios
+                .get(`/api/quote/details/${quoteId}`)
+                .then(response => {
+                    this.setState({
+                        quote: response.data.quote.quote,
+                        authorName: response.data.quote.author_name
+                    });
+                })
+                .catch(error => {
+                    history.push("/404-not-found");
                 });
-            });
         }
     }
 

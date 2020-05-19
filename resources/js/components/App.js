@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import QuoteList from "./QuoteList";
 import QuoteForm from "./QuoteForm";
 import QuoteDetails from "./QuoteDetails";
+import QuoteNotFound from "./QuoteNotFound";
 
 class App extends Component {
     render() {
@@ -14,11 +15,15 @@ class App extends Component {
                 <div>
                     <Header />
                     <Switch>
+                        <Route
+                            exact
+                            path="/404-not-found"
+                            component={QuoteNotFound}
+                        />
                         <Route exact path="/" component={QuoteList} />
-                        <Route exact path="/create" component={QuoteForm} />
                         <Route exact path="/update/:id" component={QuoteForm} />
+                        <Route exact path="/create" component={QuoteForm} />
                         <Route exact path="/:id" component={QuoteDetails} />
-                        {/* <Route exact path="/update/:id" component={QuoteForm} /> */}
                     </Switch>
                     <Footer />
                 </div>
