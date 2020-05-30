@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('quotes', 'QuoteController@getAll');
+Route::get('quote/details/{id}', 'QuoteController@getMatchingId');
+Route::post('quote', 'QuoteController@create');
+Route::put('quote/update/{id}', 'QuoteController@update');
+Route::delete('quote/delete/{id}', 'QuoteController@delete');
